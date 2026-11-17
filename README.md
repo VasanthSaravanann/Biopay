@@ -72,6 +72,7 @@ Each step has an interactive preview (hover or tap the icon), scroll-triggered a
 | --- | --- |
 | Hero — promise + live biometric scan animation | `src/components/HeroSection.tsx` |
 | Features — biometric login, smart search, visual comparison | `src/components/FeaturesSection.tsx` |
+| About — short intro + product pillars | `src/components/AboutSection.tsx` |
 | What users told us — the survey numbers | `src/components/ValidationSection.tsx` |
 | How it works — 4 interactive steps | `src/components/HowItWorksSection.tsx` |
 | Beta sign-up — waitlist form | `src/components/BetaSignUpSection.tsx` |
@@ -123,6 +124,7 @@ Biopay/
 │   ├── components/
 │   │   ├── HeroSection.tsx
 │   │   ├── FeaturesSection.tsx
+│   │   ├── AboutSection.tsx            # short intro + pillars
 │   │   ├── ValidationSection.tsx      # the research numbers, on the page
 │   │   ├── HowItWorksSection.tsx
 │   │   ├── BetaSignUpSection.tsx

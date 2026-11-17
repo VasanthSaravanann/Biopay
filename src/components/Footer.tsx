@@ -7,7 +7,7 @@ const Footer = () => {
 
   const footerLinks = {
     company: [
-      { name: "About Us", href: "#" },
+      { name: "About Us", href: "#about" },
       { name: "Careers", href: "#" },
       { name: "Blog", href: "#" },
       { name: "Press", href: "#" }
