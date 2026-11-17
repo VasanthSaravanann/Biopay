@@ -125,7 +125,9 @@ const BetaSignUpSection = () => {
 
                   <div className="text-center">
                     <p className="text-sm text-gray-500">
-                      Join!! <span className="font-semibold text-blue-600"></span> people already on the waitlist
+                      Built on feedback from{" "}
+                      <span className="font-semibold text-blue-600">93 survey respondents</span> and{" "}
+                      <span className="font-semibold text-blue-600">6 interviews</span>
                     </p>
                   </div>
                 </CardContent>

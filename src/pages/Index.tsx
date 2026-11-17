@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
+import ValidationSection from "@/components/ValidationSection";
 import BetaSignUpSection from "@/components/BetaSignUpSection";
 import Footer from "@/components/Footer";
 import { ScrollAnimationWrapper } from "@/components/ScrollAnimationWrapper";
@@ -28,6 +29,10 @@ const Index = () => {
       
       <ScrollAnimationWrapper type="slide-up">
         <HowItWorksSection />
+      </ScrollAnimationWrapper>
+
+      <ScrollAnimationWrapper type="fade-in">
+        <ValidationSection />
       </ScrollAnimationWrapper>
       
       <ScrollAnimationWrapper type="slide-up" delay={0.2}>
