@@ -30,7 +30,7 @@ const HowItWorksSection = () => {
     description: "Complete transactions safely using your verified biometric authentication",
     previewAnimation: "secure-payment"
   }];
-  return <section className="py-20 bg-gray-50">
+  return <section id="how-it-works" className="py-20 bg-gray-50 scroll-mt-16">
       <div className="container mx-auto px-6 lg:px-8">
         <motion.div className="text-center mb-16" initial={{
         opacity: 0,
@@ -85,6 +85,9 @@ const StepCard = ({
     margin: "-100px 0px"
   });
   const [isAnimating, setIsAnimating] = useState(false);
+  // HoverCard only responds to pointer devices, so the preview is also driven by
+  // explicit state — tap and keyboard both reach it.
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const IconComponent = step.icon;
   const variants = {
     hidden: {
@@ -314,7 +317,7 @@ const StepCard = ({
       {/* Connection line for desktop */}
       {index < 3 && <div className="hidden lg:block absolute top-12 left-full w-full h-0.5 bg-gray-300 -translate-x-1/2 z-0"></div>}
       
-      <HoverCard openDelay={50} closeDelay={100}>
+      <HoverCard open={isPreviewOpen} onOpenChange={setIsPreviewOpen} openDelay={50} closeDelay={100}>
         <HoverCardTrigger asChild>
           <motion.div className="relative z-10 cursor-pointer" whileHover={{
           transition: {
@@ -333,10 +336,24 @@ const StepCard = ({
               {step.number}
             </motion.div>
             
-            {/* Icon with fixed animations */}
-            <motion.div className="w-16 h-16 bg-white border-2 border-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg" variants={iconVariants} initial="initial" animate={isInView ? "animate" : "initial"} whileHover="hover" whileTap="tap" onClick={() => setIsAnimating(prev => !prev)}>
+            {/* Icon — a real button so the preview is reachable by tap and keyboard */}
+            <motion.button
+              type="button"
+              aria-expanded={isPreviewOpen}
+              aria-label={`Preview ${step.title}`}
+              className="w-16 h-16 bg-white border-2 border-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              variants={iconVariants}
+              initial="initial"
+              animate={isInView ? "animate" : "initial"}
+              whileHover="hover"
+              whileTap="tap"
+              onClick={() => {
+                setIsAnimating(prev => !prev);
+                setIsPreviewOpen(prev => !prev);
+              }}
+            >
               <IconComponent className="h-8 w-8 text-blue-600" />
-            </motion.div>
+            </motion.button>
             
             {/* Content */}
             <motion.h3 className="text-xl font-semibold text-gray-900 mb-3" initial={{

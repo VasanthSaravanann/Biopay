@@ -113,6 +113,24 @@ npm run lint
 
 Node 18+ is recommended.
 
+### Configuration
+
+The beta waitlist form has no backend by default. To connect a real one, provide an endpoint
+that accepts `POST { "email": "..." }`:
+
+```bash
+VITE_WAITLIST_ENDPOINT=https://your-api.example.com/waitlist npm run build
+```
+
+Without it, the form tells visitors the waitlist isn't connected yet instead of pretending the
+address was saved.
+
+### Deployment
+
+Deployed on Vercel from `main`. `vercel.json` adds the SPA rewrite so deep links (for example
+`/about`) reach the app instead of Vercel's own 404 page, and sets long-lived caching on hashed
+`/assets/*` files.
+
 ### Project layout
 
 ```
@@ -137,6 +155,7 @@ Biopay/
 │   │   ├── Index.tsx                  # landing page composition
 │   │   └── NotFound.tsx
 │   ├── App.tsx
+│   ├── vite-env.d.ts                  # typed env (VITE_WAITLIST_ENDPOINT)
 │   └── main.tsx
 ├── docs/
 │   ├── RESEARCH.md                    # market validation & interview findings

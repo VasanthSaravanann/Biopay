@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Fingerprint, Lock, Users } from "lucide-react";
 import { ScrollAnimationWrapper } from "@/components/ScrollAnimationWrapper";
 
@@ -21,6 +21,8 @@ const pillars = [
 ];
 
 const AboutSection = () => {
+  const reduced = useReducedMotion();
+
   return (
     <section id="about" className="py-20 bg-gray-50 scroll-mt-16">
       <div className="container mx-auto px-6 lg:px-8">
@@ -48,10 +50,14 @@ const AboutSection = () => {
                 <motion.div
                   key={pillar.title}
                   className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-left"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={reduced ? false : { opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.5, delay: index * 0.15, ease: "easeOut" }}
+                  transition={
+                    reduced
+                      ? { duration: 0 }
+                      : { duration: 0.5, delay: index * 0.15, ease: "easeOut" }
+                  }
                 >
                   <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
                     <Icon className="h-5 w-5 text-blue-600" />

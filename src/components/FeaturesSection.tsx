@@ -1,4 +1,3 @@
-
 import { Fingerprint, Search, BarChart3 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollAnimationWrapper, StaggeredChildren } from "@/components/ScrollAnimationWrapper";
@@ -34,27 +33,32 @@ const FeaturesSection = () => {
           </p>
         </ScrollAnimationWrapper>
 
-        <StaggeredChildren type="slide-up" staggerDelay={0.2}>
-          <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              const IconComponent = feature.icon;
-              return (
-                <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  <CardContent className="p-8 text-center">
-                    <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <IconComponent className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-semibold text-gray-900 mb-4">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+        <StaggeredChildren
+          type="slide-up"
+          staggerDelay={0.2}
+          className="grid md:grid-cols-3 gap-8"
+        >
+          {features.map((feature, index) => {
+            const IconComponent = feature.icon;
+            return (
+              <Card
+                key={index}
+                className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300"
+              >
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <IconComponent className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
         </StaggeredChildren>
       </div>
     </section>

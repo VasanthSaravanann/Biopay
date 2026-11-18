@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, MessageSquareQuote, ShieldCheck, TriangleAlert } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollAnimationWrapper, StaggeredChildren } from "@/components/ScrollAnimationWrapper";
@@ -37,6 +37,8 @@ const concerns = [
 ];
 
 const ValidationSection = () => {
+  const reduced = useReducedMotion();
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-6 lg:px-8">
@@ -55,23 +57,25 @@ const ValidationSection = () => {
         </ScrollAnimationWrapper>
 
         {/* Headline numbers */}
-        <StaggeredChildren type="slide-up" staggerDelay={0.2}>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <Card
-                key={index}
-                className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300"
-              >
-                <CardContent className="p-6">
-                  <p className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-                    {stat.value}
-                  </p>
-                  <p className="mt-3 font-semibold text-gray-900 leading-snug">{stat.label}</p>
-                  <p className="mt-2 text-sm text-gray-500">{stat.detail}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+        <StaggeredChildren
+          type="slide-up"
+          staggerDelay={0.15}
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
+          {stats.map((stat, index) => (
+            <Card
+              key={index}
+              className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              <CardContent className="p-6">
+                <p className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                  {stat.value}
+                </p>
+                <p className="mt-3 font-semibold text-gray-900 leading-snug">{stat.label}</p>
+                <p className="mt-2 text-sm text-gray-500">{stat.detail}</p>
+              </CardContent>
+            </Card>
+          ))}
         </StaggeredChildren>
 
         {/* Concerns + honest note */}
@@ -96,12 +100,18 @@ const ValidationSection = () => {
                         <span className="text-gray-500">{concern.percent}%</span>
                       </div>
                       <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                        {/* scaleX keeps the bar on the compositor instead of animating layout width */}
                         <motion.div
-                          className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-600"
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${concern.percent}%` }}
+                          className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-600 origin-left"
+                          style={{ width: `${concern.percent}%` }}
+                          initial={reduced ? false : { scaleX: 0 }}
+                          whileInView={{ scaleX: 1 }}
                           viewport={{ once: true, margin: "-50px" }}
-                          transition={{ duration: 0.8, delay: index * 0.15, ease: "easeOut" }}
+                          transition={{
+                            duration: reduced ? 0 : 0.8,
+                            delay: reduced ? 0 : index * 0.15,
+                            ease: "easeOut",
+                          }}
                         />
                       </div>
                     </div>

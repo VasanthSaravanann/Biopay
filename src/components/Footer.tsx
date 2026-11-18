@@ -1,6 +1,6 @@
 
 import { Separator } from "@/components/ui/separator";
-import { Github, Mail, MapPin, Phone } from "lucide-react";
+import { Github, Mail, MapPin } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -109,12 +109,8 @@ const Footer = () => {
             {/* Contact Info */}
             <div className="mt-6 space-y-2">
               <div className="flex items-center space-x-2 text-gray-400 text-sm">
-                <Phone className="h-4 w-4" />
-                <span>+91 9899 9893 9</span>
-              </div>  
-              <div className="flex items-center space-x-2 text-gray-400 text-sm">
                 <MapPin className="h-4 w-4" />
-                <span>Chennai,India</span>
+                <span>Chennai, India</span>
               </div>
             </div>
           </div>

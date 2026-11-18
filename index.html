@@ -10,8 +10,10 @@
     />
     <meta name="author" content="Biopay" />
     <meta name="theme-color" content="#2563eb" />
-    <link rel="icon" href="Designer.jpeg" />
+    <link rel="canonical" href="https://biopay.vercel.app/" />
+    <link rel="icon" type="image/jpeg" href="/Designer.jpeg" />
 
+    <!-- Social crawlers require absolute image URLs -->
     <meta property="og:title" content="Biopay — Biometric Payments, Smarter Decisions" />
     <meta
       property="og:description"
@@ -19,7 +21,9 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://biopay.vercel.app/" />
-    <meta property="og:image" content="Designer.jpeg" />
+    <meta property="og:image" content="https://biopay.vercel.app/Designer.jpeg" />
+    <meta property="og:image:alt" content="Biopay — biometric payments" />
+    <meta property="og:site_name" content="Biopay" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Biopay — Biometric Payments, Smarter Decisions" />
@@ -27,13 +31,14 @@
       name="twitter:description"
       content="Pay with a fingerprint, not a PIN. Built on research with 93 users and 6 interviews."
     />
-    <meta name="twitter:image" content="Designer.jpeg" />
+    <meta name="twitter:image" content="https://biopay.vercel.app/Designer.jpeg" />
   </head>
 
   <body>
     <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <noscript>
+      Biopay needs JavaScript enabled to display the interactive product walkthrough.
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

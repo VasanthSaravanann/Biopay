@@ -1,80 +1,62 @@
-
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
-type AnimationType = "fade-in" | "slide-up" | "slide-left" | "slide-right" | "scale-in" | "staggered";
+export type RevealType = "fade-in" | "slide-up" | "slide-left" | "slide-right" | "scale-in";
+export type AnimationType = RevealType | "staggered";
 
-interface ScrollAnimationWrapperProps {
+/**
+ * Resting (pre-reveal) state for each reveal style.
+ * Only spatial/opacity properties are animated — never layout-affecting ones.
+ */
+const hiddenStates: Record<RevealType, Record<string, number>> = {
+  "fade-in": { opacity: 0 },
+  "slide-up": { opacity: 0, y: 50 },
+  "slide-left": { opacity: 0, x: 50 },
+  "slide-right": { opacity: 0, x: -50 },
+  "scale-in": { opacity: 0, scale: 0.9 },
+};
+
+/** "staggered" has no reveal of its own; it falls back to a slide-up reveal. */
+const resolveType = (type: AnimationType): RevealType =>
+  type === "staggered" ? "slide-up" : type;
+
+/**
+ * `delay` and `duration` are in seconds.
+ * When the user prefers reduced motion we skip the movement entirely by rendering the
+ * resting state as the visible state, so content is never hidden behind an animation.
+ */
+const buildVariants = (
+  type: AnimationType,
+  duration: number,
+  delay: number,
+  reduced: boolean
+): Variants => ({
+  hidden: reduced
+    ? { opacity: 1, x: 0, y: 0, scale: 1 }
+    : hiddenStates[resolveType(type)],
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    scale: 1,
+    transition: { duration: reduced ? 0 : duration, delay: reduced ? 0 : delay, ease: "easeOut" },
+  },
+});
+
+interface BaseAnimationProps {
   children: React.ReactNode;
-  type?: AnimationType;
+  /** Delay before the reveal starts, in seconds. */
   delay?: number;
+  /** Reveal duration in seconds. */
   duration?: number;
   className?: string;
-  staggerDelay?: number;
   threshold?: number;
 }
 
-const variants = {
-  "fade-in": {
-    hidden: { opacity: 0 },
-    visible: (i: number) => ({ 
-      opacity: 1, 
-      transition: { 
-        delay: i * 0.1,
-        duration: 0.6
-      } 
-    })
-  },
-  "slide-up": {
-    hidden: { opacity: 0, y: 50 },
-    visible: (i: number) => ({ 
-      opacity: 1, 
-      y: 0, 
-      transition: { 
-        delay: i * 0.1,
-        duration: 0.6,
-        ease: "easeOut" 
-      } 
-    })
-  },
-  "slide-left": {
-    hidden: { opacity: 0, x: 50 },
-    visible: (i: number) => ({ 
-      opacity: 1, 
-      x: 0, 
-      transition: { 
-        delay: i * 0.1,
-        duration: 0.6,
-        ease: "easeOut" 
-      } 
-    })
-  },
-  "slide-right": {
-    hidden: { opacity: 0, x: -50 },
-    visible: (i: number) => ({ 
-      opacity: 1, 
-      x: 0, 
-      transition: { 
-        delay: i * 0.1,
-        duration: 0.6,
-        ease: "easeOut" 
-      } 
-    })
-  },
-  "scale-in": {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: (i: number) => ({ 
-      opacity: 1, 
-      scale: 1, 
-      transition: { 
-        delay: i * 0.1,
-        duration: 0.6,
-        ease: "easeOut" 
-      } 
-    })
-  }
-};
+export interface ScrollAnimationWrapperProps extends BaseAnimationProps {
+  type?: AnimationType;
+}
 
 export const ScrollAnimationWrapper: React.FC<ScrollAnimationWrapperProps> = ({
   children,
@@ -82,19 +64,17 @@ export const ScrollAnimationWrapper: React.FC<ScrollAnimationWrapperProps> = ({
   delay = 0,
   duration = 0.6,
   className = "",
-  staggerDelay = 0.1,
-  threshold = 0.1
+  threshold = 0,
 }) => {
   const { ref, isInView } = useScrollAnimation({ threshold });
-  const customDelay = delay;
+  const reduced = useReducedMotion();
 
   return (
     <div ref={ref} className={className}>
       <motion.div
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
-        custom={customDelay}
-        variants={variants[type]}
+        variants={buildVariants(type, duration, delay, Boolean(reduced))}
       >
         {children}
       </motion.div>
@@ -102,33 +82,55 @@ export const ScrollAnimationWrapper: React.FC<ScrollAnimationWrapperProps> = ({
   );
 };
 
-export const StaggeredChildren: React.FC<Omit<ScrollAnimationWrapperProps, "type"> & { type?: Exclude<AnimationType, "staggered"> }> = ({
+export interface StaggeredChildrenProps extends BaseAnimationProps {
+  type?: RevealType;
+  /** Gap between each child's reveal start, in seconds. */
+  staggerDelay?: number;
+}
+
+/**
+ * Staggers its children without breaking the parent's layout: the root element is the
+ * layout container (pass grid/flex/space-y classes via `className`) and each child is
+ * wrapped individually, so it still participates as a grid item or a `space-y` child.
+ */
+export const StaggeredChildren: React.FC<StaggeredChildrenProps> = ({
   children,
   delay = 0,
   duration = 0.6,
   className = "",
   staggerDelay = 0.1,
   type = "fade-in",
-  threshold = 0.1
+  threshold = 0,
 }) => {
   const { ref, isInView } = useScrollAnimation({ threshold });
-
-  // Ensure children is an array
+  const reduced = useReducedMotion();
   const childrenArray = React.Children.toArray(children);
-  
+
+  const containerVariants: Variants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: reduced ? 0 : staggerDelay,
+        delayChildren: reduced ? 0 : delay,
+      },
+    },
+  };
+
+  const childVariants = buildVariants(type, duration, 0, Boolean(reduced));
+
   return (
-    <div ref={ref} className={className}>
+    <motion.div
+      ref={ref}
+      className={className}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={containerVariants}
+    >
       {childrenArray.map((child, index) => (
-        <motion.div
-          key={index}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          custom={delay + index * staggerDelay}
-          variants={variants[type]}
-        >
+        <motion.div key={index} variants={childVariants}>
           {child}
         </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 };
