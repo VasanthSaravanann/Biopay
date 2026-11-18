@@ -38,11 +38,11 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="https://github.com"
+                href="https://github.com/VasanthSaravanann/Biopay"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
-                aria-label="GitHub"
+                aria-label="Biopay on GitHub"
               >
                 <Github className="h-5 w-5" />
               </a>

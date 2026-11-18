@@ -195,6 +195,7 @@ This is an early-stage prototype, and feedback is genuinely useful.
 ## Contact
 
 - 🌐 <https://biopay.vercel.app/>
+- 🐙 <https://github.com/VasanthSaravanann/Biopay>
 - 📍 Chennai, India
 - ✉️ Open an issue on this repository for anything about the project
 
