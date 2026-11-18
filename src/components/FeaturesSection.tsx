@@ -43,7 +43,7 @@ const FeaturesSection = () => {
             return (
               <Card
                 key={index}
-                className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full"
               >
                 <CardContent className="p-8 text-center">
                   <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">

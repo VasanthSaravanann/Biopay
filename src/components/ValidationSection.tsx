@@ -65,7 +65,7 @@ const ValidationSection = () => {
           {stats.map((stat, index) => (
             <Card
               key={index}
-              className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300"
+              className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full"
             >
               <CardContent className="p-6">
                 <p className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
